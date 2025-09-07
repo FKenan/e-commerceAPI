@@ -21,5 +21,27 @@ namespace DataAccess
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            // Tüm tablo adlarını küçük harfe çevir
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                entity.SetTableName(entity.GetTableName().ToLower());
+            }
+
+            // Tüm sütun adlarını küçük harfe çevir
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entity.GetProperties())
+                {
+                    var normalizedColumnName = property.GetColumnName()
+                        .ToLower()
+                        .Replace('ı', 'i');
+
+                    property.SetColumnName(normalizedColumnName);
+                }
+            }
+        }
     }
 }
