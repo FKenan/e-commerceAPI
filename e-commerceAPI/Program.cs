@@ -13,6 +13,13 @@ builder.Services.AddDbContext<ECommerceDbContext>(options =>
 
 // Dependency Injection for Repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+
 
 
 var app = builder.Build();
