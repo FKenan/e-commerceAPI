@@ -11,4 +11,10 @@ public class ProductRepository : Repository<Product>, IProductRepository
     {
         return await _context.Products.Include(p => p.Category).ToListAsync();
     }
+    public async Task<IEnumerable<Product>> GetByCategoryIdAsync(int categoryId)
+    {
+        return await _context.Products
+            .Where(p => p.CategoryId == categoryId)
+            .ToListAsync();
+    }
 }

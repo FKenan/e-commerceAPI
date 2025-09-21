@@ -33,6 +33,14 @@ namespace e_commerceAPI.Controllers
             return Ok(product);
         }
 
+        // GET: api/products/by-category/3
+        [HttpGet("by-category/{categoryId}")]
+        public async Task<IActionResult> GetByCategory(int categoryId)
+        {
+            var products = await _productRepository.GetByCategoryIdAsync(categoryId);
+            return Ok(products);
+        }
+
         // POST: api/products
         [HttpPost]
         public async Task<IActionResult> Create(Product product)
