@@ -44,14 +44,6 @@ namespace e_commerceAPI.Controllers
             return Ok(user);
         }
 
-        // POST: api/users/register
-        [HttpPost("register")]
-        public async Task<IActionResult> Create(User user)
-        {
-            await _userRepository.AddAsync(user);
-            return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
-        }
-
         // PUT: api/users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User updatedUser)
