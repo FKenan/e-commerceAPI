@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace e_commerceAPI.Controllers
 {
@@ -43,8 +42,14 @@ namespace e_commerceAPI.Controllers
 
         // POST: api/wishlists
         [HttpPost]
-        public async Task<IActionResult> Create(Wishlist wishlist)
+        public async Task<IActionResult> Create(WishlistRequest wishlistRequest)
         {
+            var wishlist = new Wishlist
+            {
+                UserId = wishlistRequest.UserId,
+                ProductId = wishlistRequest.ProductId
+            };
+
             await _wishlistRepository.AddAsync(wishlist);
             return CreatedAtAction(nameof(GetById), new { id = wishlist.Id }, wishlist);
         }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace e_commerceAPI.Controllers
 {
@@ -12,14 +11,6 @@ namespace e_commerceAPI.Controllers
         public AddressesController(IAddressRepository addressRepository)
         {
             _addressRepository = addressRepository;
-        }
-
-        // GET: api/addresses
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var addresses = await _addressRepository.GetAllAsync();
-            return Ok(addresses);
         }
 
         // GET: api/addresses/5
