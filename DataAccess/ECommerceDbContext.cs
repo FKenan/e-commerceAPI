@@ -25,22 +25,17 @@ namespace DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            // Tüm tablo adlarını küçük harfe çevir
-            foreach (var entity in modelBuilder.Model.GetEntityTypes())
-            {
-                entity.SetTableName(entity.GetTableName().ToLower());
-            }
+            // Farklı sistemlerde (Türkçe, İngilizce vb.) tutarlılık sağlamak için
+            var invariantCulture = System.Globalization.CultureInfo.InvariantCulture;
 
-            // Tüm sütun adlarını küçük harfe çevir
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
+                entity.SetTableName(entity.GetTableName().ToLower(invariantCulture));
+
                 foreach (var property in entity.GetProperties())
                 {
-                    var normalizedColumnName = property.GetColumnName()
-                        .ToLower()
-                        .Replace('ı', 'i');
-
-                    property.SetColumnName(normalizedColumnName);
+                    // Bu satır da "OrderId" gibi sütun adlarını doğru şekilde "orderid" olarak çevirecektir.
+                    property.SetColumnName(property.GetColumnName().ToLower(invariantCulture));
                 }
             }
         }
