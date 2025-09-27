@@ -47,12 +47,29 @@ namespace e_commerceAPI.Controllers
 
             return Ok(orderDtos);
         }
+
         // POST: api/orders
         [HttpPost]
         public async Task<IActionResult> Create(Order order)
         {
             await _orderRepository.AddAsync(order);
-            return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
+
+            var orderDto = new OrderDto
+            {
+                TotalAmount = order.TotalAmount,
+                OrderDate = order.OrderDate,
+                Status = order.Status,
+                Address = order.Address,
+                OrderItems = order.OrderItems
+                    .Select(oi => new OrderItemDto
+                    {
+                        ProductName = oi.Product?.Name ?? string.Empty,
+                        Quantity = oi.Quantity
+                    })
+                    .ToList()
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = order.Id }, orderDto);
         }
 
         // DELETE: api/orders/5

@@ -9,8 +9,10 @@ public class OrderRepository : Repository<Order>, IOrderRepository
     public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId)
     {
         return await _context.Orders
-                             .Include(o => o.OrderItems)
-                             .Where(o => o.UserId == userId)
-                             .ToListAsync();
+        .Where(o => o.UserId == userId)
+        .Include(o => o.Address)
+        .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Product)
+        .ToListAsync();
     }
 }

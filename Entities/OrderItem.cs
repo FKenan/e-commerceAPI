@@ -8,7 +8,6 @@ public class OrderItem
     public decimal UnitPrice { get; set; }
 
     public int OrderId { get; set; }
-    [JsonIgnore]
     public Order? Order { get; set; }
 
     public int ProductId { get; set; }
