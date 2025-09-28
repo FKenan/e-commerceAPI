@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace e_commerceAPI.Controllers
 {
@@ -63,8 +64,23 @@ namespace e_commerceAPI.Controllers
             if (existing is null)
                 return NotFound();
 
-            await _addressRepository.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                await _addressRepository.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Check for foreign key violation (PostgreSQL error code 23503)
+                if (ex.InnerException?.Message.Contains("violates foreign key constraint") == true)
+                {
+                    return Conflict(new
+                    {
+                        message = "Cannot delete address because it is referenced by one or more orders."
+                    });
+                }
+                throw;
+            }
         }
     }
 
