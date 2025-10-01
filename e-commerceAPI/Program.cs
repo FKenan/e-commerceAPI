@@ -27,7 +27,7 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
-        builder => builder.WithOrigins("http://localhost:3000")
+        builder => builder.WithOrigins("https://e-ticaret-eight.vercel.app", "http://localhost:3000")
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials());
