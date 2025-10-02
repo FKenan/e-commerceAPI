@@ -23,13 +23,16 @@ public class ProductRepository : Repository<Product>, IProductRepository
     {
         return await _context.Products
             //.Include(p => p.ProductImages)
-            .Where(p => p.Name.Contains(searchTerm) || p.Description.Contains(searchTerm))
+            .Where(p =>
+                EF.Functions.ILike(p.Name, $"%{searchTerm}%") ||
+                EF.Functions.ILike(p.Description ?? "", $"%{searchTerm}%")
+            )
             .Select(p => new ProductDto
             {
                 Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
-                MainImageUrl = null /*p.ProductImages.FirstOrDefault(i => i.IsMain)?.ImageUrl  => images not implemented yet*/
+                MainImageUrl = null /*p.ProductImages.FirstOrDefault(i => i.IsMain)?.ImageUrl*/
             })
             .ToListAsync();
     }
